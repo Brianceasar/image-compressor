@@ -1,0 +1,36 @@
+# Byte-compiled / optimized / DLL files
+__pycache__/
+*.py[cod]
+*$py.class
+
+# Local development settings
+.idea/
+*.iml
+*.ipr
+*.iws
+
+# Virtual environment
+venv/
+.venv/
+ENV/
+
+# Logs and databases
+*.log
+*.sqlite3
+*.db
+
+# Static files
+staticfiles/
+build/
+dist/
+
+# Test files
+.pytest_cache/
+test_*.py
+
+# Other
+*.bak
+*.swp
+.DS_Store
+
+
