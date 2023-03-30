@@ -1,20 +1,23 @@
 <!DOCTYPE html>
-<html lang="en">
-<head>
+<html>
+  <head>
     <meta charset="UTF-8">
     <title>Image Compressor</title>
-</head>
-<body>
-<h1>Image Compressor</h1>
-<form method="post" action="/" enctype="multipart/form-data">
-    <input type="file" name="image">
-    <input type="submit" value="compress">
-</form>
-
-<!--Display Compressed image-->
-{% if compressed_image %}
-        <h2>Compressed Image</h2>
-        <img src="data:image/jpeg;base64,{{ compressed_image }}" alt="compressed image">
+  </head>
+  <body>
+    <h1>Image Compressor</h1>
+    <form method="post" enctype="multipart/form-data">
+      <label for="image">Choose an image to compress:</label>
+      <input type="file" name="image" id="image" accept="image/*" required>
+      <br>
+      <button type="submit">Compress Image</button>
+    </form>
+    {% if compressed_image %}
+      <h2>Compressed Image:</h2>
+      <p>Size: {{ compressed_size }} bytes</p>
+      <img src="data:image/jpeg;base64,{{ compressed_image.decode() }}" alt="Compressed Image">
+      <br>
+      <a href="{{ url_for('index', _download=download_filename) }}">Download Compressed Image</a>
     {% endif %}
-</body>
+  </body>
 </html>
