@@ -5,6 +5,10 @@
     <title>Image Compressor</title>
   </head>
   <body>
+    {% if compress_response["image_compressed"] %}
+      <h2>Your Image was Compressed Successfully:</h2>
+      <p>Compressed Size: {{ compress_response["compressed_size"] }} bytes</p>
+    {% endif %}
     <h1>Image Compressor</h1>
     <form method="post" enctype="multipart/form-data">
       <label for="image">Choose an image to compress:</label>
@@ -12,12 +16,12 @@
       <br>
       <button type="submit">Compress Image</button>
     </form>
-    {% if compressed_image %}
-      <h2>Compressed Image:</h2>
-      <p>Size: {{ compressed_size }} bytes</p>
-      <img src="data:image/jpeg;base64,{{ compressed_image.decode() }}" alt="Compressed Image">
-      <br>
-      <a href="{{ url_for('index', _download=download_filename) }}">Download Compressed Image</a>
-    {% endif %}
+<!--      {% if is_image_compressed %}-->
+<!--      <h2>Compressed Image:</h2>-->
+<!--      <p>Size: {{ compressed_size }} bytes</p>-->
+<!--      <img src="data:image/jpeg;base64,{{ compressed_image.decode() }}" alt="Compressed Image">-->
+<!--      <br>-->
+<!--      <a href="{{ url_for('index', _download=download_filename) }}">Download Compressed Image</a>-->
+<!--    {% endif %}-->
   </body>
 </html>
