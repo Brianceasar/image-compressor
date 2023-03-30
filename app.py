@@ -14,17 +14,23 @@ def index():
         image = request.files['image'].read()
         image = Image.open(BytesIO(image))
 
+
         # Get the file extension of the uploaded image
+
         file_ext = request.files['image'].filename.split('.')[-1]
 
         # compress the image
         output = BytesIO()
+
         if image.mode != 'RGB':
+
             image = image.convert('RGB')
         if file_ext.lower() == 'png':
             image.save(output, format='PNG', optimize=True)
         else:
+
             image.save(output, format='JPEG', quality=50)
+
         output.seek(0)
 
         # Get the size of the compressed image
