@@ -1,3 +1,5 @@
+from typing import Tuple
+
 from flask import Flask, render_template, request, send_file
 from io import BytesIO
 from PIL import Image
@@ -25,14 +27,17 @@ def index():
         mimetype = f'image/{file_ext}'
         download_filename = f'{file_name[0]}-compressed.{file_ext}'
 
-        output = compress_image(file)
+        output, original_size = compress_image(file)
         last_output["bytes"] = output
         last_output["mimetype"] = mimetype
         last_output["download_filename"] = download_filename
+        last_output["original_size"] = original_size
 
         compressed_size = len(output)
+
         compress_response = {
             "image_compressed": compressed_size > 0,
+            "original_size": original_size,
             "compressed_size": compressed_size
         }
 
@@ -52,13 +57,27 @@ def index():
     return render_template('index.html')
 
 
-def compress_image(file: FileStorage) -> bytes:
+@app.route('/download')
+def download():
+    if last_output is not None:
+        return send_file(
+            BytesIO(last_output["bytes"]),
+            mimetype=last_output["mimetype"],
+            as_attachment=True,
+            download_name=last_output["download_filename"]
+        )
+
+
+def compress_image(file: FileStorage) -> tuple[bytes, int]:
     file_name = file.filename.split(".")[0]
     file_ext = file.filename.split(".")[1]
 
     file_bytes = BytesIO(file.read())
 
     image: Image = Image.open(file_bytes)
+
+    # Get the size of the original image
+    original_size = len(file_bytes.getvalue())
 
     # compress the image
     output = BytesIO()
@@ -70,16 +89,10 @@ def compress_image(file: FileStorage) -> bytes:
         image.save(output, format='JPEG', quality=50)
     output.seek(0)
 
-    return output.getvalue()
+    return output.getvalue(), original_size
 
 
 def send_image(output: BytesIO, download_name: str, mimetype: str, as_attachment: bool = True):
-    # Get the size of the compressed image
-    compressed_size = len(output.getvalue())
-
-    # Convert the compressed image to base64 for display
-    compressed_image = base64.b64encode(output.getvalue())
-
     # Download the compressed image
     download_attachment = f'attachment; filename={download_name}'
 
