@@ -1,10 +1,8 @@
 from typing import Tuple
-
 from flask import Flask, render_template, request, send_file
 from io import BytesIO
 from PIL import Image
 import base64
-
 from werkzeug.datastructures import FileStorage
 
 app = Flask(__name__)
@@ -46,13 +44,15 @@ def index():
             compress_response=compress_response
         )
     else:
-        if last_output is not None:
+        if last_output is not None and "bytes" in last_output and isinstance(last_output["bytes"], bytes):
             send_image(
                 output=BytesIO(last_output["bytes"]),
                 mimetype=last_output["mimetype"],
                 as_attachment=True,
                 download_name=last_output["download_filename"]
             )
+        # else:
+        #     return "No compressed image to download."
 
     return render_template('index.html')
 
@@ -93,6 +93,7 @@ def compress_image(file: FileStorage) -> tuple[bytes, int]:
 
 
 def send_image(output: BytesIO, download_name: str, mimetype: str, as_attachment: bool = True):
+
     # Download the compressed image
     download_attachment = f'attachment; filename={download_name}'
 
