@@ -4,14 +4,17 @@
     <meta charset="UTF-8">
     <title>Image Compressor</title>
   </head>
+
   <body>
     <h1>Image Compressor</h1>
+
     <form method="post" enctype="multipart/form-data">
       <label for="image">Choose an image to compress:</label>
       <input type="file" name="image" id="image" accept="image/*" required>
       <br>
       <button type="submit">Compress Image</button>
     </form>
+
     {% if compressed_image %}
       <h2>Compressed Image:</h2>
       <p>Size: {{ compressed_size }} bytes</p>

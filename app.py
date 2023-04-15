@@ -35,10 +35,13 @@ def index():
 
         # Download the compressed image
         download_filename = f'compressed.{file_ext.lower()}'
-        download_attachment = f'attachment; filename={download_filename}'
+        download_attachment = f'{download_filename}'
 
-        return send_file(BytesIO(output.getvalue()), mimetype=f'image/{file_ext.lower()}',
-                         as_attachment=True, attachment_filename=download_filename)
+        return send_file(BytesIO(output.getvalue()),
+                         mimetype=f'image/{file_ext.lower()}',
+                         as_attachment=True,
+                         download_name=download_attachment
+                         )
 
     return render_template('index.html')
 
