@@ -5,16 +5,35 @@
     <title>Image Compressor</title>
 </head>
 <body>
-<h1>Image Compressor</h1>
-<form method="post" action="/" enctype="multipart/form-data">
-    <input type="file" name="image">
-    <input type="submit" value="compress">
-</form>
+    <h1>Image Compressor</h1>
 
-<!--Display Compressed image-->
-{% if compressed_image %}
-        <h2>Compressed Image</h2>
-        <img src="data:image/jpeg;base64,{{ compressed_image }}" alt="compressed image">
+    <form action="/" method="post" enctype="multipart/form-data">
+        <label for="image">Select an image:</label>
+        <input type="file" id="image" name="image">
+        <br><br>
+        <input type="submit" value="Compress Image">
+    </form>
+
+    {% if compress_response %}
+        <br><br>
+        {% if compress_response['image_compressed'] %}
+            <h2>Compression Result:</h2>
+            <p>Original size: {{ compress_response['original_size'] }} bytes</p>
+            <p>Compressed size: {{ compress_response['compressed_size'] }} bytes</p>
+            <p>Compression ratio: {{ compress_response['compression_ratio'] }}%</p>
+            <a href="{{ url_for('index') }}">Upload another image</a>
+            <br><br>
+            {% if last_output %}
+                <h2>Download Compressed Image:</h2>
+                <a href="{{ url_for('download_compressed_image') }}" download="{{ last_output['download_filename'] }}">
+                    {{ last_output['download_filename'] }}
+                </a>
+            {% endif %}
+        {% else %}
+            <p>Unable to compress the image.</p>
+            <a href="{{ url_for('index') }}">Try again</a>
+        {% endif %}
     {% endif %}
+
 </body>
 </html>
