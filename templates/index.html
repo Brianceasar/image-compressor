@@ -2,10 +2,10 @@
 <html lang="en">
 <head>
     <meta charset="UTF-8">
-    <title>Image Compressor</title>
+    <title>Image Compression</title>
 </head>
 <body>
-    <h1>Image Compressor</h1>
+    <h1>Image Compression</h1>
 
     <form action="/" method="post" enctype="multipart/form-data">
         <label for="image">Select an image:</label>
@@ -21,11 +21,11 @@
             <p>Original size: {{ compress_response['original_size'] }} bytes</p>
             <p>Compressed size: {{ compress_response['compressed_size'] }} bytes</p>
             <p>Compression ratio: {{ compress_response['compression_ratio'] }}%</p>
-            <a href="{{ url_for('index') }}">Upload another image</a>
+            <a href="{{ url_for('index') }}">Compress another image</a>
             <br><br>
             {% if last_output %}
                 <h2>Download Compressed Image:</h2>
-                <a href="{{ url_for('download_compressed_image') }}" download="{{ last_output['download_filename'] }}">
+                <a href="{{ url_for('download') }}" download="{{ last_output['download_filename'] }}">
                     {{ last_output['download_filename'] }}
                 </a>
             {% endif %}
